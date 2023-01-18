@@ -1,6 +1,5 @@
 package pl.bobak.integrations.fdademo.configuration;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class OpenfdaSearchConfiguration {
     private String searchUrl;
