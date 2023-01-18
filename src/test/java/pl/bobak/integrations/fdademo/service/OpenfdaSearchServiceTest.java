@@ -13,13 +13,13 @@ public class OpenfdaSearchServiceTest {
     private OpenfdaSearchService searchServiceUnderTest;
 
     @Test
-    void shouldCreateUrlAsExpected() {
+    void shouldCreateUrlWithoutLimitValueAndWithoutBrandName() {
         // given
         String expectedUrl = "https://api.fda.gov/drug/drugsfda.json?search=openfda.manufacturer_name:\"test input\"";
         String phrase = "test input";
 
         // when
-        String computedUrl = searchServiceUnderTest.createUrl(phrase);
+        String computedUrl = searchServiceUnderTest.createUrl(phrase, null, null);
 
         // then
         assertEquals(expectedUrl, computedUrl);
