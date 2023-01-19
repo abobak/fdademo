@@ -25,11 +25,13 @@ public class OpenfdaSearchController {
     public List<DrugRecordApplication> getApplications(
             @RequestParam String manufacturer,
             @RequestParam(required = false, name = "brand_name") String brandName,
-            @RequestParam(required = false) Integer limit) throws JSONException, JsonProcessingException {
+            @RequestParam(required = false, name = "page_size") Integer limit,
+            @RequestParam(required = false, name = "page") Integer page) throws JSONException, JsonProcessingException {
         if (nonNull(limit) && (limit > 1000)) {
             throw new BadRequestException("Open FDA api limit of 1000 results exceeded, please use limit lower than 1000");
         }
-        return DrugRecordApplicationMapper.dtosToEntities(searchService.getApplications(manufacturer, brandName, limit));
+        return DrugRecordApplicationMapper.dtosToEntities(
+                searchService.getApplications(manufacturer, brandName, limit, page));
     }
 
 }
