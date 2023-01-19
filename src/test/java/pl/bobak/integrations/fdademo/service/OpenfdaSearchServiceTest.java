@@ -24,7 +24,7 @@ public class OpenfdaSearchServiceTest {
         String phrase = "test input";
 
         // when
-        String computedUrl = searchServiceUnderTest.createUrl(phrase, null, null);
+        String computedUrl = searchServiceUnderTest.createUrl(phrase, null, null, null);
 
         // then
         assertEquals(expectedUrl, computedUrl);
@@ -39,7 +39,7 @@ public class OpenfdaSearchServiceTest {
         String secondPhrase = "another test input";
 
         // when
-        String computedUrl = searchServiceUnderTest.createUrl(firstPhrase, secondPhrase, null);
+        String computedUrl = searchServiceUnderTest.createUrl(firstPhrase, secondPhrase, null, null);
 
         // then
         assertEquals(expectedUrl, computedUrl);
@@ -55,7 +55,24 @@ public class OpenfdaSearchServiceTest {
         Integer limit = 3;
 
         // when
-        String computedUrl = searchServiceUnderTest.createUrl(phrase, secondPhrase, limit);
+        String computedUrl = searchServiceUnderTest.createUrl(phrase, secondPhrase, limit, null);
+
+        // then
+        assertEquals(expectedUrl, computedUrl);
+    }
+
+    @Test
+    void shouldCreateUrlWithLimitValueWithSkipValueAndWithBrandName() {
+        // given
+        String expectedUrl = "https://api.fda.gov/drug/drugsfda.json?search=openfda.manufacturer_name:" +
+                "\"test input\"+AND+openfda.brand_name:\"another test input\"&limit=3&skip=9";
+        String phrase = "test input";
+        String secondPhrase = "another test input";
+        Integer limit = 3;
+        Integer page = 4;
+
+        // when
+        String computedUrl = searchServiceUnderTest.createUrl(phrase, secondPhrase, limit, page);
 
         // then
         assertEquals(expectedUrl, computedUrl);

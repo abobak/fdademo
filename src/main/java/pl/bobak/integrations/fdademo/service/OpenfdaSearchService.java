@@ -29,28 +29,32 @@ public class OpenfdaSearchService {
 
     private static final String AND_BY_BRAND_NAME_PREDICATE = "+AND+openfda.brand_name:";
 
-    public List<DrugRecordApplicationDto> getApplications(String manufacturer, String brandName, Integer limit) throws JSONException, JsonProcessingException {
-        String data = getApplicationsData(manufacturer, brandName, limit);
+    public List<DrugRecordApplicationDto> getApplications(
+            String manufacturer, String brandName, Integer limit, Integer page) throws JSONException, JsonProcessingException {
+        String data = getApplicationsData(manufacturer, brandName, limit, page);
         return getApplicationDataFromResult(data);
     }
 
-    public String getApplicationsData(String manufacturer, String brandName, Integer limit) {
+    public String getApplicationsData(String manufacturer, String brandName, Integer limit, Integer page) {
         return webClient
                 .get()
-                .uri(createUrl(manufacturer, brandName, limit))
+                .uri(createUrl(manufacturer, brandName, limit, page))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
     }
 
-    String createUrl(String manufacturer, String brandName, Integer limit) {
+    String createUrl(String manufacturer, String brandName, Integer limit, Integer page) {
         String uri = openfdaSearchConfiguration.getSearchUrl() + BY_MANUFACTURER_PREDICATE + "\"" + manufacturer + "\"";
         if (nonNull(brandName)) {
             uri += AND_BY_BRAND_NAME_PREDICATE + "\"" + brandName + "\"";
         }
         if (nonNull(limit)) {
             uri += "&limit=" + limit;
+        }
+        if (nonNull(limit) && nonNull(page) && page > 1) {
+            uri += "&skip=" + (page - 1) * limit;
         }
         return uri;
     }

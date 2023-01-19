@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(OpenfdaSearchController.class)
-public class OpenfdaSearchControllerExceptionTest {
+class OpenfdaSearchControllerExceptionTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,18 +36,19 @@ public class OpenfdaSearchControllerExceptionTest {
 
     @Test
     void shouldThrowExceptionWhenLimitProvidedIsGreaterThan1000() throws Exception {
-        mockMvc.perform(get("/search?manufacturer=\"anything\"&limit=1001")
+        mockMvc.perform(get("/search?manufacturer=\"anything\"&page_size=1001")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void whenInputParametersAreCorrectThenSearchServiceIsInvoked() throws Exception {
-        Mockito.when(openfdaSearchService.getApplications(any(), any(), any())).thenReturn(List.of());
-        mockMvc.perform(get("/search?manufacturer=\"anything\"&limit=100")
+        Mockito.when(openfdaSearchService.getApplications(any(), any(), any(), any())).thenReturn(List.of());
+        mockMvc.perform(get("/search?manufacturer=\"anything\"&page_size=100")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        Mockito.verify(openfdaSearchService, Mockito.times(1)).getApplications(any(), any(), any());
+        Mockito.verify(openfdaSearchService, Mockito.times(1))
+                .getApplications(any(), any(), any(), any());
     }
 
 }
