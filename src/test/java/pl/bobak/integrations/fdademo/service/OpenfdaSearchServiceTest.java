@@ -3,7 +3,6 @@ package pl.bobak.integrations.fdademo.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.bobak.integrations.fdademo.model.DrugRecordApplicationDto;
 
@@ -79,7 +78,7 @@ public class OpenfdaSearchServiceTest {
     }
 
     @Test
-    void shouldExtractThreeDtosFromValidApiResponse() throws JSONException, JsonProcessingException {
+    void shouldExtractThreeDtosFromValidApiResponse() throws JsonProcessingException {
         // given
         String validApiResponse = """
                 {
