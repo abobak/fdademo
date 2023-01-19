@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "de7ba82b-289f-43a9-a043-e4e12cfcf26c",
+		"name": "OpenFda Integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24402123"
+	},
+	"item": [
+		{
+			"name": "Sample search for basic application data based on manufacturer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/search?manufacturer=pharma&page_size=2&page=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "manufacturer",
+							"value": "pharma"
+						},
+						{
+							"key": "page_size",
+							"value": "2"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sample search for basic application data based on manufacturer and brand name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/search?manufacturer=pharma&brand_name=\"a\"&page_size=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "manufacturer",
+							"value": "pharma"
+						},
+						{
+							"key": "brand_name",
+							"value": "\"a\""
+						},
+						{
+							"key": "page_size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a user submitted drug record application",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"application_number\": \"123456ABC\",\r\n    \"manufacturer_name\": \"Pharma 1\",\r\n    \"substance_name\": \"Vitamin C\",\r\n    \"product_numbers\": [\"A\", \"B\"]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a user submitted drug application record",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/applications/123456ABC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"applications",
+						"123456ABC"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all applications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"applications"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
