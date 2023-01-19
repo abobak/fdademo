@@ -10,3 +10,5 @@ How to run the application
 3. Using command line run "mvn clean install" command in project root directory
 4. Go to target directory and run "java -jar fdademo-0.0.1-SNAPSHOT.jar"
 5. By default server is available on port 8080
+
+A postman collection of sample requests is available in postman directory
