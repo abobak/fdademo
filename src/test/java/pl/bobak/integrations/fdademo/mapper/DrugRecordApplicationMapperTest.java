@@ -1,12 +1,13 @@
 package pl.bobak.integrations.fdademo.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import pl.bobak.integrations.fdademo.model.DrugRecordApplication;
 import pl.bobak.integrations.fdademo.model.DrugRecordApplicationDto;
 
+import java.io.StringReader;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -94,9 +95,10 @@ public class DrugRecordApplicationMapperTest {
                }""".indent(1);
 
     @Test
-    void shouldMapJsonPayloadToDto() throws JSONException, JsonProcessingException {
+    void shouldMapJsonPayloadToDto() throws JsonProcessingException {
         // given
-        JSONObject jsonObject = new JSONObject(validJsonPayload).getJSONObject("openfda");
+
+        JsonObject jsonObject = Json.createReader(new StringReader(validJsonPayload)).readObject().getJsonObject("openfda");
         String expectedApplicationNumber = "ANDA206242";
 
         // when
@@ -108,9 +110,9 @@ public class DrugRecordApplicationMapperTest {
     }
 
     @Test
-    void shouldMapDtoToEntity() throws JSONException, JsonProcessingException {
+    void shouldMapDtoToEntity() throws JsonProcessingException {
         // given
-        JSONObject jsonObject = new JSONObject(validJsonPayload).getJSONObject("openfda");
+        JsonObject jsonObject = Json.createReader(new StringReader(validJsonPayload)).readObject().getJsonObject("openfda");
         DrugRecordApplicationDto dto = DrugRecordApplicationMapper.jsonObjectToDto(jsonObject);
 
         // when
@@ -124,9 +126,9 @@ public class DrugRecordApplicationMapperTest {
     }
 
     @Test
-    void shouldMapListsOfDtosToListsOfEntities() throws JSONException, JsonProcessingException {
+    void shouldMapListsOfDtosToListsOfEntities() throws JsonProcessingException {
         // given
-        JSONObject jsonObject = new JSONObject(validJsonPayload).getJSONObject("openfda");
+        JsonObject jsonObject = Json.createReader(new StringReader(validJsonPayload)).readObject().getJsonObject("openfda");
         DrugRecordApplicationDto dto = DrugRecordApplicationMapper.jsonObjectToDto(jsonObject);
 
         // when

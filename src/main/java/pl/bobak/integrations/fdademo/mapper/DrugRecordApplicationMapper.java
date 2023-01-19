@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import jakarta.json.JsonObject;
 import pl.bobak.integrations.fdademo.model.DrugRecordApplication;
 import pl.bobak.integrations.fdademo.model.DrugRecordApplicationDto;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DrugRecordApplicationMapper {
 
-    public static DrugRecordApplicationDto jsonObjectToDto(JSONObject obj) throws JsonProcessingException {
+    public static DrugRecordApplicationDto jsonObjectToDto(JsonObject obj) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
