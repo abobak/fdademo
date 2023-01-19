@@ -1,10 +1,11 @@
 package pl.bobak.integrations.fdademo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,6 +13,7 @@ import pl.bobak.integrations.fdademo.configuration.OpenfdaSearchConfiguration;
 import pl.bobak.integrations.fdademo.mapper.DrugRecordApplicationMapper;
 import pl.bobak.integrations.fdademo.model.DrugRecordApplicationDto;
 
+import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class OpenfdaSearchService {
     private static final String AND_BY_BRAND_NAME_PREDICATE = "+AND+openfda.brand_name:";
 
     public List<DrugRecordApplicationDto> getApplications(
-            String manufacturer, String brandName, Integer limit, Integer page) throws JSONException, JsonProcessingException {
+            String manufacturer, String brandName, Integer limit, Integer page) throws JsonProcessingException {
         String data = getApplicationsData(manufacturer, brandName, limit, page);
         return getApplicationDataFromResult(data);
     }
@@ -59,22 +61,23 @@ public class OpenfdaSearchService {
         return uri;
     }
 
-    List<DrugRecordApplicationDto> getApplicationDataFromResult(String result) throws JSONException, JsonProcessingException {
+    List<DrugRecordApplicationDto> getApplicationDataFromResult(String result) throws JsonProcessingException {
         List<DrugRecordApplicationDto> applicationNumbers = new LinkedList<>();
-        JSONArray results = new JSONObject(result).getJSONArray("results");
-        for (int i = 0; i< results.length(); i++) {
-            JSONObject obj = results.getJSONObject(i);
-            DrugRecordApplicationDto dto = DrugRecordApplicationMapper.jsonObjectToDto(obj.getJSONObject("openfda"));
-            dto = enrichDtoWithProductNumbers(dto, obj.getJSONArray("products"));
+        JsonObject jsonObject = Json.createReader(new StringReader(result)).readObject();
+        JsonArray results = jsonObject.getJsonArray("results");
+        for (int i = 0; i< results.size(); i++) {
+            JsonObject obj = results.getJsonObject(i);
+            DrugRecordApplicationDto dto = DrugRecordApplicationMapper.jsonObjectToDto(obj.getJsonObject("openfda"));
+            dto = enrichDtoWithProductNumbers(dto, obj.getJsonArray("products"));
             applicationNumbers.add(dto);
         }
         return applicationNumbers;
     }
 
-    DrugRecordApplicationDto enrichDtoWithProductNumbers(DrugRecordApplicationDto dto, JSONArray products) throws JSONException {
+    DrugRecordApplicationDto enrichDtoWithProductNumbers(DrugRecordApplicationDto dto, JsonArray products) {
         if (nonNull(products)) {
-            for (int i = 0; i < products.length(); i++) {
-                dto.getProductNumbers().add((String) products.getJSONObject(i).get("product_number"));
+            for (int i = 0; i < products.size(); i++) {
+                dto.getProductNumbers().add(products.getJsonObject(i).get("product_number").toString());
             }
         }
         return dto;
