@@ -8,5 +8,8 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
